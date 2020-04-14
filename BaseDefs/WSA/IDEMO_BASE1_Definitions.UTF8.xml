@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:TWSBatchApplicationInstance xmlns:model="http://www.ibm.com/xmlns/prod/scheduling/1.0/Model">
+  <model:Name>IDEMO_BASE1</model:Name>
+  <model:Vendor>IBM</model:Vendor>
+  <model:Description>Default demo jobs</model:Description>
+  <model:JobDefinition folder="$FOLDER_/IDEMO$/" name="$JOB_WSA_PROM_JOB$" workstation="$WORKSTATION_WA_AGT$">
+    <model:description>Sample executable job</model:description>
+    <model:task cmd="false" exec="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;jsdl:jobDefinition xmlns:XMLSchema=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:jsdl=&quot;http://www.ibm.com/xmlns/prod/scheduling/1.0/jsdl&quot; xmlns:jsdle=&quot;http://www.ibm.com/xmlns/prod/scheduling/1.0/jsdle&quot; XMLSchema:text=&quot;resolveVariableTable&quot; name=&quot;executable&quot;>&#xA;  &lt;jsdl:application name=&quot;executable&quot;>&#xA;    &lt;jsdle:executable interactive=&quot;false&quot;>&#xA;            &lt;jsdle:environment>&#xA;                &lt;jsdle:variable name=&quot;norm_time&quot;>30&lt;/jsdle:variable>&#xA;                &lt;jsdle:variable name=&quot;prom_time&quot;>45&lt;/jsdle:variable>&#xA;            &lt;/jsdle:environment>&#xA;            &lt;jsdle:script>&#xA;#!/bin/bash&#xA;. /opt/wa/twa_env.sh&#xA;echo ${tws.job.promoted}&#xA;if [ &amp;quot;$tws.job.promoted&amp;quot; = YES ]&#xA;then&#xA;sleep ${norm_time}&#xA;else&#xA;sleep ${prom_time}&#xA;fi&#xA;&#xA;&lt;/jsdle:script>&#xA;            &lt;jsdle:credential>&#xA;                &lt;jsdle:userName>wauser&lt;/jsdle:userName>&#xA;            &lt;/jsdle:credential>&#xA;        &lt;/jsdle:executable>&#xA;  &lt;/jsdl:application>&#xA;&lt;/jsdl:jobDefinition>" interactive="false" jsdlTask="true" type="executable"/>
+    <model:recovery action="stop"/>
+  </model:JobDefinition>
+  <model:JobDefinition folder="$FOLDER_/IDEMO$/" name="$JOB_WSA_DEADLINE$" workstation="$WORKSTATION_WA_AGT$">
+    <model:description>Sample executable job</model:description>
+    <model:task cmd="false" exec="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;jsdl:jobDefinition xmlns:XMLSchema=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:jsdl=&quot;http://www.ibm.com/xmlns/prod/scheduling/1.0/jsdl&quot; xmlns:jsdle=&quot;http://www.ibm.com/xmlns/prod/scheduling/1.0/jsdle&quot; XMLSchema:text=&quot;resolveVariableTable&quot; name=&quot;executable&quot;>&#xA;  &lt;jsdl:application name=&quot;executable&quot;>&#xA;    &lt;jsdle:executable interactive=&quot;false&quot;>&#xA;            &lt;jsdle:environment>&#xA;                &lt;jsdle:variable name=&quot;wsa_mins&quot;>6&lt;/jsdle:variable>&#xA;            &lt;/jsdle:environment>&#xA;            &lt;jsdle:script>&#xA;#!/bin/bash&#xA;. /opt/wa/twa_env.sh&#xA;&#xA;newD=`datecalc -t now + ${wsa_mins} minute pic hhtt`;&#xA;conman &amp;quot;adj ${tws.jobstream.workstation}#${tws.jobstream.id}.final_job;schedid;deadline=$newD&amp;quot;&#xA;&#xA;&lt;/jsdle:script>&#xA;            &lt;jsdle:credential>&#xA;                &lt;jsdle:userName>wauser&lt;/jsdle:userName>&#xA;            &lt;/jsdle:credential>&#xA;        &lt;/jsdle:executable>&#xA;  &lt;/jsdl:application>&#xA;&lt;/jsdl:jobDefinition>" interactive="false" jsdlTask="true" type="executable"/>
+    <model:recovery action="stop"/>
+  </model:JobDefinition>
+  <model:JobStream carryforward="false" draft="false" folder="$FOLDER_/IDEMO$/" iskey="false" limit="-1" name="$JOBSTREAM_WSA3THREADS$" onrequest="false" priority="10" workstation="$WORKSTATION_WA_AGT$">
+    <model:description>Demo scenario for critical path</model:description>
+    <model:runcycles/>
+    <model:matching>
+      <model:sameDay/>
+    </model:matching>
+    <model:restrictions/>
+    <model:dependencies/>
+    <model:jobs>
+      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_DEADLINE$" isCritical="false" iskey="false" name="$JOB_WSA_DEADLINE$" priority="10">
+        <model:restrictions/>
+        <model:dependencies/>
+      </model:job>
+      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T1A$" priority="10">
+        <model:restrictions/>
+        <model:dependencies>
+          <model:predecessor target="$JOB_WSA_DEADLINE$"/>
+        </model:dependencies>
+      </model:job>
+      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T1B$" priority="10">
+        <model:restrictions/>
+        <model:dependencies>
+          <model:predecessor target="$JOB_T1A$"/>
+        </model:dependencies>
+      </model:job>
+      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T1C$" priority="10">
+        <model:restrictions/>
+        <model:dependencies>
+          <model:predecessor target="$JOB_T1B$"/>
+        </model:dependencies>
+      </model:job>
+      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T1D$" priority="10">
+        <model:restrictions/>
+        <model:dependencies>
+          <model:predecessor target="$JOB_T1C$"/>
+        </model:dependencies>
+      </model:job>
+      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T2A$" priority="10">
+        <model:restrictions/>
+        <model:dependencies>
+          <model:predecessor target="$JOB_WSA_DEADLINE$"/>
+        </model:dependencies>
+      </model:job>
+      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T2B$" priority="10">
+        <model:restrictions/>
+        <model:dependencies>
+          <model:predecessor target="$JOB_T2A$"/>
+        </model:dependencies>
+      </model:job>
+      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T2C$" priority="10">
+        <model:restrictions/>
+        <model:dependencies>
+          <model:predecessor target="$JOB_T2B$"/>
+        </model:dependencies>
+      </model:job>
+      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T2D$" priority="10">
+        <model:restrictions/>
+        <model:dependencies>
+          <model:predecessor target="$JOB_T2C$"/>
+        </model:dependencies>
+      </model:job>
+      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T3A$" priority="10">
+        <model:restrictions/>
+        <model:dependencies>
+          <model:predecessor target="$JOB_WSA_DEADLINE$"/>
+        </model:dependencies>
+      </model:job>
+      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T3B$" priority="10">
+        <model:restrictions/>
+        <model:dependencies>
+          <model:predecessor target="$JOB_T3A$"/>
+        </model:dependencies>
+      </model:job>
+      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T3C$" priority="10">
+        <model:restrictions/>
+        <model:dependencies>
+          <model:predecessor target="$JOB_T3B$"/>
+        </model:dependencies>
+      </model:job>
+      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T3D$" priority="10">
+        <model:restrictions/>
+        <model:dependencies>
+          <model:predecessor target="$JOB_T3C$"/>
+        </model:dependencies>
+      </model:job>
+      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="true" iskey="false" name="$JOB_FINAL_JOB$" priority="10">
+        <model:restrictions/>
+        <model:dependencies>
+          <model:predecessor target="$JOB_T1D$"/>
+          <model:predecessor target="$JOB_T2D$"/>
+          <model:predecessor target="$JOB_T3D$"/>
+        </model:dependencies>
+      </model:job>
+    </model:jobs>
+    <model:uipreferences>{
+  &quot;id&quot; : &quot;f7e42c49-af9c-37d3-ba1a-4f67693aac1e&quot;,
+  &quot;objectType&quot; : &quot;JOB&quot;,
+  &quot;preferences&quot; : &quot;{}&quot;
+}</model:uipreferences>
+  </model:JobStream>
+</model:TWSBatchApplicationInstance>
