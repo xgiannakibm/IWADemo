@@ -50,6 +50,12 @@
           <model:predecessor target="$JOB_T1C$"/>
         </model:dependencies>
       </model:job>
+      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T1E$" priority="10">
+        <model:restrictions/>
+        <model:dependencies>
+          <model:predecessor target="$JOB_T1D$"/>
+        </model:dependencies>
+      </model:job>
       <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T2A$" priority="10">
         <model:restrictions/>
         <model:dependencies>
@@ -72,6 +78,12 @@
         <model:restrictions/>
         <model:dependencies>
           <model:predecessor target="$JOB_T2C$"/>
+        </model:dependencies>
+      </model:job>
+      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T2E$" priority="10">
+        <model:restrictions/>
+        <model:dependencies>
+          <model:predecessor target="$JOB_T2D$"/>
         </model:dependencies>
       </model:job>
       <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T3A$" priority="10">
@@ -98,12 +110,18 @@
           <model:predecessor target="$JOB_T3C$"/>
         </model:dependencies>
       </model:job>
+      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T3E$" priority="10">
+        <model:restrictions/>
+        <model:dependencies>
+          <model:predecessor target="$JOB_T3D$"/>
+        </model:dependencies>
+      </model:job>
       <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="true" iskey="false" name="$JOB_FINAL_JOB$" priority="10">
         <model:restrictions/>
         <model:dependencies>
-          <model:predecessor target="$JOB_T1D$"/>
-          <model:predecessor target="$JOB_T2D$"/>
-          <model:predecessor target="$JOB_T3D$"/>
+          <model:predecessor target="$JOB_T1E$"/>
+          <model:predecessor target="$JOB_T2E$"/>
+          <model:predecessor target="$JOB_T3E$"/>
         </model:dependencies>
       </model:job>
     </model:jobs>
