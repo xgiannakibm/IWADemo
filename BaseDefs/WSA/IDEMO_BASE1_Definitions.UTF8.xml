@@ -8,13 +8,71 @@
     <model:task cmd="false" exec="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;jsdl:jobDefinition xmlns:XMLSchema=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:jsdl=&quot;http://www.ibm.com/xmlns/prod/scheduling/1.0/jsdl&quot; xmlns:jsdle=&quot;http://www.ibm.com/xmlns/prod/scheduling/1.0/jsdle&quot; XMLSchema:text=&quot;resolveVariableTable&quot; name=&quot;executable&quot;>&#xA;  &lt;jsdl:application name=&quot;executable&quot;>&#xA;    &lt;jsdle:executable interactive=&quot;false&quot;>&#xA;            &lt;jsdle:environment>&#xA;                &lt;jsdle:variable name=&quot;norm_time&quot;>30&lt;/jsdle:variable>&#xA;                &lt;jsdle:variable name=&quot;prom_time&quot;>45&lt;/jsdle:variable>&#xA;            &lt;/jsdle:environment>&#xA;            &lt;jsdle:script>&#xA;#!/bin/bash&#xA;. /opt/wa/twa_env.sh&#xA;echo ${tws.job.promoted}&#xA;if [ &amp;quot;$tws.job.promoted&amp;quot; = YES ]&#xA;then&#xA;sleep ${norm_time}&#xA;else&#xA;sleep ${prom_time}&#xA;fi&#xA;&#xA;&lt;/jsdle:script>&#xA;            &lt;jsdle:credential>&#xA;                &lt;jsdle:userName>wauser&lt;/jsdle:userName>&#xA;            &lt;/jsdle:credential>&#xA;        &lt;/jsdle:executable>&#xA;  &lt;/jsdl:application>&#xA;&lt;/jsdl:jobDefinition>" interactive="false" jsdlTask="true" type="executable"/>
     <model:recovery action="stop"/>
   </model:JobDefinition>
-  <model:JobDefinition folder="$FOLDER_/IDEMO$/" name="$JOB_WSA_DEADLINE$" workstation="$WORKSTATION_WA_AGT$">
-    <model:description>Sample executable job</model:description>
-    <model:task cmd="false" exec="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;jsdl:jobDefinition xmlns:XMLSchema=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:jsdl=&quot;http://www.ibm.com/xmlns/prod/scheduling/1.0/jsdl&quot; xmlns:jsdle=&quot;http://www.ibm.com/xmlns/prod/scheduling/1.0/jsdle&quot; XMLSchema:text=&quot;resolveVariableTable&quot; name=&quot;executable&quot;>&#xA;  &lt;jsdl:application name=&quot;executable&quot;>&#xA;    &lt;jsdle:executable interactive=&quot;false&quot;>&#xA;            &lt;jsdle:environment>&#xA;                &lt;jsdle:variable name=&quot;wsa_mins&quot;>6&lt;/jsdle:variable>&#xA;            &lt;/jsdle:environment>&#xA;            &lt;jsdle:script>&#xA;#!/bin/bash&#xA;. /opt/wa/twa_env.sh&#xA;&#xA;newD=`datecalc -t now + ${wsa_mins} minute pic hhtt`;&#xA;conman &amp;quot;adj ${tws.jobstream.workstation}#${tws.jobstream.id}.final_job;schedid;deadline=$newD&amp;quot;&#xA;&#xA;&lt;/jsdle:script>&#xA;            &lt;jsdle:credential>&#xA;                &lt;jsdle:userName>wauser&lt;/jsdle:userName>&#xA;            &lt;/jsdle:credential>&#xA;        &lt;/jsdle:executable>&#xA;  &lt;/jsdl:application>&#xA;&lt;/jsdl:jobDefinition>" interactive="false" jsdlTask="true" type="executable"/>
+  <model:JobDefinition folder="$FOLDER_/IDEMO$/" logon="wauser" name="$JOB_SETDEADLINE2$" workstation="$WORKSTATION_WA_AGT$">
+    <model:description>Added by composer for job stream: VISIONDEMO#WSA3THREADS.</model:description>
+    <model:task cmd="true" exec="$UNISONWORK/../VisionDemo/bin/setDeadLine.sh 2" interactive="false" jsdlTask="false" type="UNIX"/>
     <model:recovery action="stop"/>
   </model:JobDefinition>
-  <model:JobStream carryforward="false" draft="false" folder="$FOLDER_/IDEMO$/" iskey="false" limit="-1" name="$JOBSTREAM_WSA3THREADS$" onrequest="false" priority="10" workstation="$WORKSTATION_WA_AGT$">
-    <model:description>Demo scenario for critical path</model:description>
+  <model:JobDefinition folder="$FOLDER_/IDEMO$/" name="$JOB_RER_RERUN$" workstation="$WORKSTATION_WA_AGT$">
+    <model:task cmd="false" exec="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;jsdl:jobDefinition xmlns:jsdl=&quot;http://www.ibm.com/xmlns/prod/scheduling/1.0/jsdl&quot; xmlns:jsdljobmanagement=&quot;http://www.ibm.com/xmlns/prod/scheduling/1.0/jsdljobmanagement&quot; name=&quot;JOBMANAGEMENT&quot;>&#xA;  &lt;jsdl:application name=&quot;jobmanagement&quot;>&#xA;    &lt;jsdljobmanagement:jobmanagement>&#xA;&#x9;&#x9;&#x9;&lt;jsdljobmanagement:JobManagementParameters>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobmanagement:Connection>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobmanagement:connectionInfo>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobmanagement:Url>${agent-config:master-address}&lt;/jsdljobmanagement:Url>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobmanagement:credentials>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdl:userName>wauser&lt;/jsdl:userName>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdl:password>{aes}hXbLU/gQNawo7b+crbXhAHvrCwvbeY3QFySG06FUB2U=&lt;/jsdl:password>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/jsdljobmanagement:credentials>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobmanagement:CertificateGroup>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobmanagement:keyStoreFilePath/>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobmanagement:keyStorePassword/>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobmanagement:HostnameVerifyCheckbox/>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/jsdljobmanagement:CertificateGroup>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/jsdljobmanagement:connectionInfo>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobmanagement:retryOptions>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobmanagement:NumberOfRetries>0&lt;/jsdljobmanagement:NumberOfRetries>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobmanagement:RetryIntervalSeconds>30&lt;/jsdljobmanagement:RetryIntervalSeconds>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/jsdljobmanagement:retryOptions>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;/jsdljobmanagement:Connection>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobmanagement:Action>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobmanagement:informations>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobmanagement:jobname>RER_Load1&lt;/jsdljobmanagement:jobname>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobmanagement:workstation>${tws.jobstream.workstation}&lt;/jsdljobmanagement:workstation>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobmanagement:jobstreamid>${tws.jobstream.id}&lt;/jsdljobmanagement:jobstreamid>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/jsdljobmanagement:informations>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobmanagement:actions>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobmanagement:method>reruninternalsuccessors&lt;/jsdljobmanagement:method>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/jsdljobmanagement:actions>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobmanagement:options>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobmanagement:condition/>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/jsdljobmanagement:options>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;/jsdljobmanagement:Action>&#xA;&#x9;&#x9;&#x9;&lt;/jsdljobmanagement:JobManagementParameters>&#xA;&#x9;&#x9;&lt;/jsdljobmanagement:jobmanagement>&#xA;  &lt;/jsdl:application>&#xA;&lt;/jsdl:jobDefinition>&#xA;" interactive="false" jsdlTask="true" type="jobmanagement"/>
+    <model:recovery action="stop"/>
+  </model:JobDefinition>
+  <model:JobDefinition folder="$FOLDER_/IDEMO$/" name="$JOB_RER_PAYLOAD$" workstation="$WORKSTATION_WA_AGT$">
+    <model:task cmd="false" exec="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;jsdl:jobDefinition xmlns:jsdl=&quot;http://www.ibm.com/xmlns/prod/scheduling/1.0/jsdl&quot; xmlns:jsdle=&quot;http://www.ibm.com/xmlns/prod/scheduling/1.0/jsdle&quot; name=&quot;executable&quot;>&#xA;  &lt;jsdl:application name=&quot;executable&quot;>&#xA;    &lt;jsdle:executable interactive=&quot;false&quot;>&#xA;            &lt;jsdle:script>sleep 5&lt;/jsdle:script>&#xA;        &lt;/jsdle:executable>&#xA;  &lt;/jsdl:application>&#xA;&lt;/jsdl:jobDefinition>&#xA;" interactive="false" jsdlTask="true" type="executable"/>
+    <model:recovery action="stop"/>
+  </model:JobDefinition>
+  <model:JobDefinition folder="$FOLDER_/IDEMO$/" name="$JOB_LATE_TEST_SUB$" workstation="$WORKSTATION_WA_AGT$">
+    <model:task cmd="false" exec="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;jsdl:jobDefinition xmlns:jsdl=&quot;http://www.ibm.com/xmlns/prod/scheduling/1.0/jsdl&quot; xmlns:jsdljobstreamsubmission=&quot;http://www.ibm.com/xmlns/prod/scheduling/1.0/jsdljobstreamsubmission&quot; name=&quot;JOBSTREAMSUBMISSION&quot;>&#xA;  &lt;jsdl:application name=&quot;jobstreamsubmission&quot;>&#xA;    &lt;jsdljobstreamsubmission:jobstreamsubmission>&#xA;&#x9;&#x9;&#x9;&lt;jsdljobstreamsubmission:JobstreamSubmissionParameters>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobstreamsubmission:Connection>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobstreamsubmission:connectionInfo>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobstreamsubmission:Url>https://wa951c-server:31116&lt;/jsdljobstreamsubmission:Url>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobstreamsubmission:credentials>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdl:userName>wauser&lt;/jsdl:userName>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdl:password>{aes}r+Ou54WVa+xo96z1y9IchnUNLni9Wt9ZJFMtRAVx2W8=&lt;/jsdl:password>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/jsdljobstreamsubmission:credentials>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobstreamsubmission:CertificateGroup>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobstreamsubmission:keyStoreFilePath/>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobstreamsubmission:keyStorePassword/>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/jsdljobstreamsubmission:CertificateGroup>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/jsdljobstreamsubmission:connectionInfo>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobstreamsubmission:retryOptions>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobstreamsubmission:NumberOfRetries>0&lt;/jsdljobstreamsubmission:NumberOfRetries>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobstreamsubmission:RetryIntervalSeconds>30&lt;/jsdljobstreamsubmission:RetryIntervalSeconds>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/jsdljobstreamsubmission:retryOptions>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;/jsdljobstreamsubmission:Connection>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobstreamsubmission:Action>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobstreamsubmission:method>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobstreamsubmission:specifyjobstream>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobstreamsubmission:workstation>WA_AGT&lt;/jsdljobstreamsubmission:workstation>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobstreamsubmission:jobstreamname>/IDEMO/LATE_TEST&lt;/jsdljobstreamsubmission:jobstreamname>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobstreamsubmission:alias/>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/jsdljobstreamsubmission:specifyjobstream>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/jsdljobstreamsubmission:method>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobstreamsubmission:earlieststart>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobstreamsubmission:timeoptions>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobstreamsubmission:startafter>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobstreamsubmission:delayforhours>00:00&lt;/jsdljobstreamsubmission:delayforhours>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/jsdljobstreamsubmission:startafter>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/jsdljobstreamsubmission:timeoptions>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/jsdljobstreamsubmission:earlieststart>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobstreamsubmission:managevariabletable>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdljobstreamsubmission:variabletablename/>&#xA;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/jsdljobstreamsubmission:managevariabletable>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;/jsdljobstreamsubmission:Action>&#xA;&#x9;&#x9;&#x9;&lt;/jsdljobstreamsubmission:JobstreamSubmissionParameters>&#xA;&#x9;&#x9;&lt;/jsdljobstreamsubmission:jobstreamsubmission>&#xA;  &lt;/jsdl:application>&#xA;&lt;/jsdl:jobDefinition>&#xA;" interactive="false" jsdlTask="true" type="jobstreamsubmission"/>
+    <model:recovery action="stop"/>
+  </model:JobDefinition>
+  <model:JobDefinition folder="$FOLDER_/IDEMO$/" name="$JOB_DATASTAGEDEMO$" workstation="$WORKSTATION_WA_AGT$">
+    <model:task cmd="false" exec="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;jsdl:jobDefinition xmlns:jsdl=&quot;http://www.ibm.com/xmlns/prod/scheduling/1.0/jsdl&quot; xmlns:jsdldatastage=&quot;http://www.ibm.com/xmlns/prod/scheduling/1.0/jsdldatastage&quot; name=&quot;DATASTAGE&quot;>&#xA;  &lt;jsdl:application name=&quot;datastage&quot;>&#xA;    &lt;jsdldatastage:datastage>&#xA;&#x9;&#x9;&#x9;&lt;jsdldatastage:DataStageParameters>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;jsdldatastage:DataStagePanel>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdldatastage:Logon>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdldatastage:Domain/>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdldatastage:Server/>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdldatastage:UserName/>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdldatastage:password>{aes}erBasFOigf/QurHwVW7TsT+csM2NmaOwmIbHAadMcBI=&lt;/jsdldatastage:password>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/jsdldatastage:Logon>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdldatastage:JobDefinitionGroup>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdldatastage:ProjectNameGroup>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdldatastage:ProjectName>aa&lt;/jsdldatastage:ProjectName>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/jsdldatastage:ProjectNameGroup>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdldatastage:JobNameButtonGroup>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdldatastage:JobNameRadioButton>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdldatastage:JobName>bb&lt;/jsdldatastage:JobName>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/jsdldatastage:JobNameRadioButton>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/jsdldatastage:JobNameButtonGroup>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdldatastage:FileRemotePath/>&#xA;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/jsdldatastage:JobDefinitionGroup>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdldatastage:JobExecutionGroup/>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;/jsdldatastage:DataStagePanel>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;jsdldatastage:OptionsPanel>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdldatastage:JobOptionsGroup>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdldatastage:WarningLimitButtonGroup>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdldatastage:NoWarningLimitButton/>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/jsdldatastage:WarningLimitButtonGroup>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdldatastage:RowLimitButtonGroup>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdldatastage:NoRowLimitButton/>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/jsdldatastage:RowLimitButtonGroup>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdldatastage:OperationalMetadataGroup>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;jsdldatastage:UseDefault/>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/jsdldatastage:OperationalMetadataGroup>&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/jsdldatastage:JobOptionsGroup>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;/jsdldatastage:OptionsPanel>&#xA;&#x9;&#x9;&#x9;&lt;/jsdldatastage:DataStageParameters>&#xA;&#x9;&#x9;&lt;/jsdldatastage:datastage>&#xA;  &lt;/jsdl:application>&#xA;&lt;/jsdl:jobDefinition>&#xA;" interactive="false" jsdlTask="true" type="datastage"/>
+    <model:recovery action="rerun">
+      <model:rerun>
+        <model:every interval="10" occurrences="5"/>
+      </model:rerun>
+    </model:recovery>
+  </model:JobDefinition>
+  <model:JobStream carryforward="false" draft="true" folder="$FOLDER_/IDEMO$/" iskey="false" limit="-1" name="$JOBSTREAM_DEMOJS$" onrequest="false" priority="10" workstation="$WORKSTATION_WA_AGT$">
+    <model:runcycles>
+      <model:rule except="false" icalendar="FREQ=MONTHLY;INTERVAL=1;BYDAY=3TU,3WE,3TH" name="RC1">
+        <model:restrictions/>
+        <model:subset>SUBSET_1</model:subset>
+        <model:subsetOperator>OR</model:subsetOperator>
+      </model:rule>
+      <model:rule except="true" icalendar="FREQ=MONTHLY;INTERVAL=1;BYMONTHDAY=21" name="RC2">
+        <model:restrictions/>
+        <model:subset>SUBSET_1</model:subset>
+        <model:subsetOperator>OR</model:subsetOperator>
+      </model:rule>
+    </model:runcycles>
+    <model:matching>
+      <model:sameDay/>
+    </model:matching>
+    <model:restrictions/>
+    <model:dependencies/>
+    <model:jobs>
+      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_DATASTAGEDEMO$" every="5" isCritical="false" iskey="false" name="$JOB_DATASTAGEDEMO$" priority="10">
+        <model:restrictions/>
+        <model:dependencies>
+          <model:opens file="/home/wauser/VisionDemo/Data/Trigg/readytogo" qualifier="-f %p" workstation="$WORKSTATION_WA_AGT$"/>
+        </model:dependencies>
+      </model:job>
+      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_LATE_TEST_SUB$" every="5" isCritical="false" iskey="false" name="$JOB_LATE_TEST_SUB$" priority="10">
+        <model:restrictions/>
+        <model:dependencies>
+          <model:predecessor target="$JOB_DATASTAGEDEMO$"/>
+        </model:dependencies>
+      </model:job>
+    </model:jobs>
+    <model:uipreferences>{
+  &quot;id&quot; : &quot;312778e5-674b-3a1e-a527-abacb84cc145&quot;,
+  &quot;objectType&quot; : &quot;JOB&quot;,
+  &quot;preferences&quot; : &quot;{\&quot;modelingJobLayout\&quot;:{\&quot;s_FileDependency child_46_t_wo_38\&quot;:{\&quot;type\&quot;:\&quot;link\&quot;,\&quot;link_name\&quot;:\&quot;/opt/incoming/readytogo\&quot;},\&quot;s_wo_38_t_child_41\&quot;:{\&quot;type\&quot;:\&quot;link\&quot;,\&quot;link_name\&quot;:\&quot;DataSTageDemo\&quot;},\&quot;wo_38\&quot;:{\&quot;choords\&quot;:{\&quot;x\&quot;:1500.0,\&quot;y\&quot;:1520.0},\&quot;type\&quot;:\&quot;com.ibm.tws.objects.model.Job\&quot;,\&quot;job_name\&quot;:\&quot;DataSTageDemo\&quot;},\&quot;FileDependency child_46\&quot;:{\&quot;choords\&quot;:{\&quot;x\&quot;:1500.0,\&quot;y\&quot;:1350.0},\&quot;type\&quot;:\&quot;com.ibm.tws.objects.model.FileDependency\&quot;,\&quot;filedependency_name\&quot;:\&quot;/opt/incoming/readytogo\&quot;},\&quot;child_41\&quot;:{\&quot;choords\&quot;:{\&quot;x\&quot;:2040.0,\&quot;y\&quot;:1550.0},\&quot;type\&quot;:\&quot;com.ibm.tws.objects.model.Job\&quot;,\&quot;job_name\&quot;:\&quot;LATE_TEST_SUB\&quot;}},\&quot;modelingJobLayout_zoomData\&quot;:{\&quot;zoomLevel\&quot;:85.0}}&quot;
+}</model:uipreferences>
+  </model:JobStream>
+  <model:JobStream carryforward="false" draft="false" folder="$FOLDER_/IDEMO$/" iskey="false" limit="-1" name="$JOBSTREAM_LATE_TEST$" onrequest="false" priority="10" workstation="$WORKSTATION_WA_AGT$">
+    <model:description>Jobstream meant to have a late job</model:description>
     <model:runcycles/>
     <model:matching>
       <model:sameDay/>
@@ -22,113 +80,80 @@
     <model:restrictions/>
     <model:dependencies/>
     <model:jobs>
-      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_DEADLINE$" isCritical="false" iskey="false" name="$JOB_WSA_DEADLINE$" priority="10">
+      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_JOB1$" priority="10">
+        <model:restrictions/>
+        <model:dependencies>
+          <model:predecessor target="$JOB_SETDEADLINE2$"/>
+        </model:dependencies>
+      </model:job>
+      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_JOB2$" priority="10">
+        <model:restrictions/>
+        <model:dependencies>
+          <model:predecessor target="$JOB_JOB1$"/>
+        </model:dependencies>
+      </model:job>
+      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_FINAL_JOB$" priority="10">
+        <model:restrictions/>
+        <model:dependencies>
+          <model:predecessor target="$JOB_JOB2$"/>
+        </model:dependencies>
+      </model:job>
+      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_SETDEADLINE2$" isCritical="false" iskey="false" name="$JOB_SETDEADLINE2$" priority="10">
         <model:restrictions/>
         <model:dependencies/>
       </model:job>
-      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T1A$" priority="10">
-        <model:restrictions/>
-        <model:dependencies>
-          <model:predecessor target="$JOB_WSA_DEADLINE$"/>
-        </model:dependencies>
-      </model:job>
-      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T1B$" priority="10">
-        <model:restrictions/>
-        <model:dependencies>
-          <model:predecessor target="$JOB_T1A$"/>
-        </model:dependencies>
-      </model:job>
-      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T1C$" priority="10">
-        <model:restrictions/>
-        <model:dependencies>
-          <model:predecessor target="$JOB_T1B$"/>
-        </model:dependencies>
-      </model:job>
-      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T1D$" priority="10">
-        <model:restrictions/>
-        <model:dependencies>
-          <model:predecessor target="$JOB_T1C$"/>
-        </model:dependencies>
-      </model:job>
-      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T1E$" priority="10">
-        <model:restrictions/>
-        <model:dependencies>
-          <model:predecessor target="$JOB_T1D$"/>
-        </model:dependencies>
-      </model:job>
-      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T2A$" priority="10">
-        <model:restrictions/>
-        <model:dependencies>
-          <model:predecessor target="$JOB_WSA_DEADLINE$"/>
-        </model:dependencies>
-      </model:job>
-      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T2B$" priority="10">
-        <model:restrictions/>
-        <model:dependencies>
-          <model:predecessor target="$JOB_T2A$"/>
-        </model:dependencies>
-      </model:job>
-      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T2C$" priority="10">
-        <model:restrictions/>
-        <model:dependencies>
-          <model:predecessor target="$JOB_T2B$"/>
-        </model:dependencies>
-      </model:job>
-      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T2D$" priority="10">
-        <model:restrictions/>
-        <model:dependencies>
-          <model:predecessor target="$JOB_T2C$"/>
-        </model:dependencies>
-      </model:job>
-      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T2E$" priority="10">
-        <model:restrictions/>
-        <model:dependencies>
-          <model:predecessor target="$JOB_T2D$"/>
-        </model:dependencies>
-      </model:job>
-      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T3A$" priority="10">
-        <model:restrictions/>
-        <model:dependencies>
-          <model:predecessor target="$JOB_WSA_DEADLINE$"/>
-        </model:dependencies>
-      </model:job>
-      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T3B$" priority="10">
-        <model:restrictions/>
-        <model:dependencies>
-          <model:predecessor target="$JOB_T3A$"/>
-        </model:dependencies>
-      </model:job>
-      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T3C$" priority="10">
-        <model:restrictions/>
-        <model:dependencies>
-          <model:predecessor target="$JOB_T3B$"/>
-        </model:dependencies>
-      </model:job>
-      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T3D$" priority="10">
-        <model:restrictions/>
-        <model:dependencies>
-          <model:predecessor target="$JOB_T3C$"/>
-        </model:dependencies>
-      </model:job>
-      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="false" iskey="false" name="$JOB_T3E$" priority="10">
-        <model:restrictions/>
-        <model:dependencies>
-          <model:predecessor target="$JOB_T3D$"/>
-        </model:dependencies>
-      </model:job>
-      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_WSA_PROM_JOB$" isCritical="true" iskey="false" name="$JOB_FINAL_JOB$" priority="10">
-        <model:restrictions/>
-        <model:dependencies>
-          <model:predecessor target="$JOB_T1E$"/>
-          <model:predecessor target="$JOB_T2E$"/>
-          <model:predecessor target="$JOB_T3E$"/>
-        </model:dependencies>
-      </model:job>
     </model:jobs>
     <model:uipreferences>{
-  &quot;id&quot; : &quot;f7e42c49-af9c-37d3-ba1a-4f67693aac1e&quot;,
+  &quot;id&quot; : &quot;4e52b963-ac2f-3c0c-9801-10550316fc34&quot;,
   &quot;objectType&quot; : &quot;JOB&quot;,
-  &quot;preferences&quot; : &quot;{}&quot;
+  &quot;preferences&quot; : &quot;{\&quot;modelingJobLayout\&quot;:{\&quot;89483b31-b749-3de3-bbad-aa0c93b863c7\&quot;:{\&quot;choords\&quot;:{\&quot;x\&quot;:1500.0,\&quot;y\&quot;:1670.0},\&quot;type\&quot;:\&quot;com.ibm.tws.objects.model.Job\&quot;,\&quot;job_name\&quot;:\&quot;JOB1\&quot;},\&quot;6895e2ee-868a-3104-aaf7-3b43b61e616f\&quot;:{\&quot;choords\&quot;:{\&quot;x\&quot;:1500.0,\&quot;y\&quot;:1840.0},\&quot;type\&quot;:\&quot;com.ibm.tws.objects.model.Job\&quot;,\&quot;job_name\&quot;:\&quot;JOB2\&quot;},\&quot;5e66471e-63d9-33ea-91f6-b37c5fa80f2a\&quot;:{\&quot;choords\&quot;:{\&quot;x\&quot;:1500.0,\&quot;y\&quot;:2010.0},\&quot;type\&quot;:\&quot;com.ibm.tws.objects.model.Job\&quot;,\&quot;job_name\&quot;:\&quot;FINAL_JOB\&quot;},\&quot;07ff9d70-06c0-382f-9c98-9cc6e5e9ad2b\&quot;:{\&quot;choords\&quot;:{\&quot;x\&quot;:1500.0,\&quot;y\&quot;:1500.0},\&quot;type\&quot;:\&quot;com.ibm.tws.objects.model.Job\&quot;,\&quot;job_name\&quot;:\&quot;SETDEADLINE2\&quot;},\&quot;s_07ff9d70-06c0-382f-9c98-9cc6e5e9ad2b_t_89483b31-b749-3de3-bbad-aa0c93b863c7\&quot;:{\&quot;choords\&quot;:[],\&quot;type\&quot;:\&quot;link\&quot;,\&quot;link_name\&quot;:\&quot;SETDEADLINE2\&quot;},\&quot;s_89483b31-b749-3de3-bbad-aa0c93b863c7_t_6895e2ee-868a-3104-aaf7-3b43b61e616f\&quot;:{\&quot;choords\&quot;:[],\&quot;type\&quot;:\&quot;link\&quot;,\&quot;link_name\&quot;:\&quot;JOB1\&quot;},\&quot;s_6895e2ee-868a-3104-aaf7-3b43b61e616f_t_5e66471e-63d9-33ea-91f6-b37c5fa80f2a\&quot;:{\&quot;choords\&quot;:[],\&quot;type\&quot;:\&quot;link\&quot;,\&quot;link_name\&quot;:\&quot;JOB2\&quot;}},\&quot;modelingJobLayout_zoomData\&quot;:{\&quot;zoomLevel\&quot;:46.0}}&quot;
 }</model:uipreferences>
+  </model:JobStream>
+  <model:JobStream carryforward="false" draft="false" folder="$FOLDER_/IDEMO$/" iskey="false" limit="-1" name="$JOBSTREAM_LATE_TEST_SUB$" onrequest="false" priority="10" workstation="$WORKSTATION_WA_AGT$">
+    <model:runcycles/>
+    <model:matching>
+      <model:sameDay/>
+    </model:matching>
+    <model:restrictions/>
+    <model:dependencies/>
+    <model:jobs>
+      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_LATE_TEST_SUB$" isCritical="false" iskey="false" name="$JOB_LATE_TEST_SUB$" priority="10">
+        <model:restrictions/>
+        <model:dependencies/>
+      </model:job>
+    </model:jobs>
+  </model:JobStream>
+  <model:JobStream carryforward="false" draft="false" folder="$FOLDER_/IDEMO$/" iskey="false" limit="-1" name="$JOBSTREAM_RER_FLOW$" onrequest="false" priority="10" workstation="$WORKSTATION_WA_AGT$">
+    <model:description>Added by composer.</model:description>
+    <model:runcycles/>
+    <model:matching>
+      <model:sameDay/>
+    </model:matching>
+    <model:restrictions/>
+    <model:dependencies/>
+    <model:jobs>
+      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_RER_PAYLOAD$" isCritical="false" iskey="false" name="$JOB_RER_LOAD1$" priority="10">
+        <model:restrictions/>
+        <model:dependencies>
+          <model:predecessor target="$JOB_RER_EVERY$"/>
+        </model:dependencies>
+      </model:job>
+      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_RER_PAYLOAD$" isCritical="false" iskey="false" name="$JOB_RER_LOAD2$" priority="10">
+        <model:restrictions/>
+        <model:dependencies>
+          <model:predecessor target="$JOB_RER_LOAD1$"/>
+        </model:dependencies>
+      </model:job>
+      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_RER_RERUN$" isCritical="false" iskey="false" name="$JOB_RER_RERUN$" priority="10">
+        <model:restrictions/>
+        <model:dependencies>
+          <model:predecessor target="$JOB_RER_LOAD2$"/>
+        </model:dependencies>
+      </model:job>
+      <model:job confirmed="false" defintion="$WORKSTATION_WA_AGT$#$FOLDER_/IDEMO$/$JOB_RER_PAYLOAD$" every="5" isCritical="false" iskey="false" name="$JOB_RER_EVERY$" priority="10">
+        <model:restrictions/>
+        <model:dependencies/>
+      </model:job>
+    </model:jobs>
   </model:JobStream>
 </model:TWSBatchApplicationInstance>
